@@ -1,0 +1,1 @@
+Note : This code component is a modified version of https://github.com/aroudaki/powerfx-pcf-control/ which works in custom pages.
