@@ -109,13 +109,6 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
   };
 
   private _getDocumentUriAsync = async (): Promise<string> => {
-    //return `powerfx://demo?context=${this.state.formulaContext}`; 
-    //return `powerfx://demo?context=${this.state.formulaContext}`;
-    //return `powerfx://formula_columns?entityLogicalName=cr7a3_pfx&getExpressionType=true&localeName=en-US&getTokensFlags=1`;
-    console.log(`powerfx://formula_columns?entityLogicalName=` + this.props.entityName + `&getExpressionType=true&localeName=en-US&getTokensFlags=1`);
     return `powerfx://formula_columns?entityLogicalName=` + this.props.entityName + `&getExpressionType=true&localeName=en-US&getTokensFlags=1`;
   };
-  /*
-{"FormulaBody":"{\"jsonrpc\":\"2.0\",\"id\":\"19bb11d4-5d93-4536-a215-ed463c1f280a\",\"method\":\"textDocument/signatureHelp\",\"params\":{\"textDocument\":{\"uri\":\"powerfx://formula_columns?entityLogicalName=cr7a3_pfx&getExpressionType=true&localeName=en-US&expression=Back%28\"},\"position\":{\"line\":0,\"character\":5}}}"}
-  */
 }
