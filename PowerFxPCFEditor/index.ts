@@ -70,8 +70,9 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
             height: allocatedHeight,
             formula: context.parameters.formula.raw ?? '',
             formulaContext: formulaContext,
-            onEditorStateChanged: (editorState: IOutputs) => { this._editorState = editorState; this._notifyOutputChanged(); }
+            onEditorStateChanged: (editorState: IOutputs) => { this._editorState = editorState; this._notifyOutputChanged(); },
         };
+
         return React.createElement(ControlContainer, props);
     }
 

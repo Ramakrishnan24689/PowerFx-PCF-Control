@@ -1,14 +1,16 @@
 
 import * as React from 'react';
 import { IDisposable, MessageProcessor, PowerFxFormulaEditor } from '@microsoft/power-fx-formulabar/lib';
-import { sendDataAsync } from './lsp_helper';
 import { PowerFxLanguageClient } from './PowerFxLanguageClient';
+import { sendDataAsync } from './lsp_helper';
+import loader from '@monaco-editor/loader';
+import * as monaco from 'monaco-editor';
 
 export interface EditorState {
   formula: string;
   formulaContext: string;
   error?: string;
-  evaluateValue?: string
+  evaluateValue?: string;
 }
 
 export interface PowerFxEditorProps {
@@ -32,7 +34,7 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
 
     this.state = {
       formula: props.formula,
-      formulaContext: props.formulaContext,
+      formulaContext: props.formulaContext
     };
 
     const onDataReceived = (data: string) => {
@@ -50,6 +52,13 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
       sendAsync: async (data: string): Promise<void> =>
         this._languageClient.sendAsync(data)
     };
+
+    // Required to preconfigure monaco loader which fails in custom page during initial load
+    // Reference implementation - https://github.com/suren-atoyan/monaco-loader
+    loader.config({ monaco });
+    loader.init().then((monaco) => {
+      console.info("monaco instance initialized");
+    }).catch((error) => { console.error(error) });
   }
 
   public async componentDidMount() {
@@ -69,20 +78,19 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
           messageProcessor={this._messageProcessor}
           maxLineCount={editorMaxLine || 1}
           minLineCount={editorMinLine || 1}
-          monacoEditorOptions={{ fixedOverflowWidgets: false, dimensions: {width : this.props.width, height: this.props.height} }}
+          monacoEditorOptions={{ fixedOverflowWidgets: false }}
           onChange={this._onExpressionChanged}
           lspConfig={{
             enableSignatureHelpRequest: true
           }}
-          key={this.props.entityName}
         />
         <div style={{ minHeight: 21, border: '#d2d0ce 1px solid' }}>{evaluateValue ?? ''}</div>
       </>);
   }
 
+
   private _onExpressionChanged = (newValue: string): void => {
     const { onEditorStateChanged } = this.props;
-
     this.setState({ formula: newValue }, () => {
       onEditorStateChanged?.(this.state);
     });
@@ -97,7 +105,6 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
     if (!result.ok) {
       return;
     }
-
     const response = await result.json();
     let newState: EditorState = { formula, formulaContext, evaluateValue: '', error: '' };
     if (response.result) {
@@ -109,13 +116,6 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
   };
 
   private _getDocumentUriAsync = async (): Promise<string> => {
-    //return `powerfx://demo?context=${this.state.formulaContext}`; 
-    //return `powerfx://demo?context=${this.state.formulaContext}`;
-    //return `powerfx://formula_columns?entityLogicalName=cr7a3_pfx&getExpressionType=true&localeName=en-US&getTokensFlags=1`;
-    console.log(`powerfx://formula_columns?entityLogicalName=` + this.props.entityName + `&getExpressionType=true&localeName=en-US&getTokensFlags=1`);
     return `powerfx://formula_columns?entityLogicalName=` + this.props.entityName + `&getExpressionType=true&localeName=en-US&getTokensFlags=1`;
   };
-  /*
-{"FormulaBody":"{\"jsonrpc\":\"2.0\",\"id\":\"19bb11d4-5d93-4536-a215-ed463c1f280a\",\"method\":\"textDocument/signatureHelp\",\"params\":{\"textDocument\":{\"uri\":\"powerfx://formula_columns?entityLogicalName=cr7a3_pfx&getExpressionType=true&localeName=en-US&expression=Back%28\"},\"position\":{\"line\":0,\"character\":5}}}"}
-  */
 }
