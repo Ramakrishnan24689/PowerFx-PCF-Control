@@ -6,7 +6,9 @@ export class PowerFxLanguageClient {
   }
 
   public async sendAsync(data: string) {
-    const payloadData = JSON.stringify({ FormulaBody: data });
+    // Hardcoded FormulaType : 1
+    //const payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1 });
+    const payloadData = JSON.stringify({ FormulaBody: data});
     console.log('[LSP Client] Send: ' + payloadData);
 
     try {

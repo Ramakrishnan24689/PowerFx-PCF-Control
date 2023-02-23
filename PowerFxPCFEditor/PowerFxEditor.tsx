@@ -1,20 +1,24 @@
 
 import * as React from 'react';
-import { IDisposable, MessageProcessor, PowerFxFormulaEditor } from '@microsoft/power-fx-formulabar/lib';
+import { IDisposable, MessageProcessor } from '@microsoft/power-fx-formulabar/lib';
+import { PowerFxFormulaEditor } from './PowerFXFormulaBar-Forked/PowerFxFormulaEditor';
 import { PowerFxLanguageClient } from './PowerFxLanguageClient';
 import { sendDataAsync } from './lsp_helper';
-import loader from '@monaco-editor/loader';
-import * as monaco from 'monaco-editor';
+// import loader from '@monaco-editor/loader';
+// import * as monaco from 'monaco-editor';
 
 export interface EditorState {
   formula: string;
   formulaContext: string;
   error?: string;
   evaluateValue?: string;
+  // key?: string;
+  // defaultValueChanged?: boolean;
 }
 
 export interface PowerFxEditorProps {
   lsp_url: string
+  // defaultValueChanged: boolean;
   formula: string;
   formulaContext: string;
   editorMaxLine?: number;
@@ -23,6 +27,8 @@ export interface PowerFxEditorProps {
   onEditorStateChanged?: (newState: EditorState) => void;
   width?: number;
   height?: number;
+  isReadOnly?: boolean;
+  // key?: string
 }
 
 export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, EditorState> {
@@ -34,7 +40,8 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
 
     this.state = {
       formula: props.formula,
-      formulaContext: props.formulaContext
+      formulaContext: props.formulaContext,
+      // defaultValueChanged: props.defaultValueChanged,
     };
 
     const onDataReceived = (data: string) => {
@@ -55,10 +62,13 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
 
     // Required to preconfigure monaco loader which fails in custom page during initial load
     // Reference implementation - https://github.com/suren-atoyan/monaco-loader
-    loader.config({ monaco });
-    loader.init().then((monaco) => {
-      console.info("monaco instance initialized");
-    }).catch((error) => { console.error(error) });
+    // loader.config({ monaco });
+    // loader.init().then((monaco) => {
+    //   console.info("monaco instance initialized");
+    // }).catch((error) => { console.error(error) });
+
+
+
   }
 
   public async componentDidMount() {
@@ -67,9 +77,10 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
     }
   }
 
+
   public render() {
     const { formula, evaluateValue } = this.state;
-    const { editorMaxLine, editorMinLine } = this.props;
+    const { editorMaxLine, editorMinLine, isReadOnly } = this.props;
     return (
       <>
         <PowerFxFormulaEditor
@@ -83,6 +94,8 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
           lspConfig={{
             enableSignatureHelpRequest: true
           }}
+          width={this.props.width}
+          isReadOnly={isReadOnly}
         />
         <div style={{ minHeight: 21, border: '#d2d0ce 1px solid' }}>{evaluateValue ?? ''}</div>
       </>);
