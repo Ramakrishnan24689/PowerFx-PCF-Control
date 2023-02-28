@@ -98,7 +98,8 @@ export class FormulaEditorBase extends React.Component<FormulaEditorProps, Formu
       className,
       styles,
       theme,
-      monacoEditorOptions
+      monacoEditorOptions,
+      key
     } = this.props;
     const { focused } = this.state;
 
@@ -121,6 +122,7 @@ export class FormulaEditorBase extends React.Component<FormulaEditorProps, Formu
               options={{ ...defaultEditorOptions, ...monacoEditorOptions }}
               defaultValue={defaultValue}
               onMount={this._onEditorDidMount}
+              key={key}
             />
           }
         </div>

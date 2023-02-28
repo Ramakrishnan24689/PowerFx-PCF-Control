@@ -10,8 +10,9 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
     recId: string;
     entityName: string;
     entityRecordJString: string;
-    // prevDefaultValue: string;
-    // defaultValueChanged: boolean;
+    prevDefaultValue: string;
+    defaultValueChanged: boolean;
+    componentKey: string;
     /**
      * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
      * Data-set values are not initialized here, use updateView.
@@ -37,18 +38,19 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
         const contextEx = (context as unknown as ContextEx);
         const pageURL = this.parsePageURL();
         const entityName = context?.parameters.entityName.raw ?? pageURL.etn ?? contextEx?.page.entityTypeName;
-        //const defaultValue = context.parameters.defaultValue.raw ?? '';
+        const defaultValue = context.parameters.defaultValue.raw ?? '';
         let lspServiceURL = context.parameters.lspServiceURL.raw;
         if (!lspServiceURL && !contextEx.mode.isAuthoringMode) {
             lspServiceURL = contextEx.page.getClientUrl();
             lspServiceURL = lspServiceURL.concat('/api/data/v9.0/RetrieveLanguageServerData');
         }
         // Check if default formula changed
-        // this.defaultValueChanged = false;
-        // if (this.prevDefaultValue !== defaultValue) {
-        //     this.prevDefaultValue = defaultValue;
-        //     this.defaultValueChanged = true;
-        // }
+        this.defaultValueChanged = false;
+        if (this.prevDefaultValue !== defaultValue) {
+            this.prevDefaultValue = defaultValue;
+            this.defaultValueChanged = true;
+            this.componentKey = this.componentKey === undefined ? entityName : this.componentKey.concat("_1") ;
+        }
 
         const allocatedWidth = parseInt(context?.mode.allocatedWidth as unknown as string);
         const allocatedHeight = parseInt(context?.mode.allocatedHeight as unknown as string);
@@ -79,12 +81,13 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
             editorMaxLine: context.parameters.editorMaxLine.raw ?? 4,
             width: allocatedWidth,
             height: allocatedHeight,
-            formula: context.parameters.formula.raw ?? '',
-            //formula: this.defaultValueChanged ? defaultValue : context.parameters.formula.raw ?? '',
-            //defaultValueChanged: this.defaultValueChanged,
+            //formula: context.parameters.formula.raw ?? '',
+            formula: this.defaultValueChanged ? defaultValue : context.parameters.formula.raw ?? '',
+            defaultValueChanged: this.defaultValueChanged,
             formulaContext: formulaContext,
             onEditorStateChanged: (editorState: IOutputs) => { this._editorState = editorState; this._notifyOutputChanged(); },
-            isReadOnly: context.parameters.ReadOnly.raw
+            isReadOnly: context.parameters.ReadOnly.raw,
+            key: this.componentKey
         };
 
         return React.createElement(ControlContainer, props);

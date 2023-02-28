@@ -89,7 +89,7 @@ export interface PowerFxFormulaEditorProps {
 
   key?: string;
 
-  isReadOnly? : boolean;
+  isReadOnly?: boolean;
 }
 
 export interface IDisposable {

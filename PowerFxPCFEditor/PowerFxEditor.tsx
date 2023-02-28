@@ -12,13 +12,13 @@ export interface EditorState {
   formulaContext: string;
   error?: string;
   evaluateValue?: string;
-  // key?: string;
-  // defaultValueChanged?: boolean;
+  key?: string;
+  defaultValueChanged?: boolean;
 }
 
 export interface PowerFxEditorProps {
   lsp_url: string
-  // defaultValueChanged: boolean;
+  defaultValueChanged: boolean;
   formula: string;
   formulaContext: string;
   editorMaxLine?: number;
@@ -28,7 +28,7 @@ export interface PowerFxEditorProps {
   width?: number;
   height?: number;
   isReadOnly?: boolean;
-  // key?: string
+  key?: string
 }
 
 export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, EditorState> {
@@ -41,7 +41,7 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
     this.state = {
       formula: props.formula,
       formulaContext: props.formulaContext,
-      // defaultValueChanged: props.defaultValueChanged,
+      defaultValueChanged: props.defaultValueChanged,
     };
 
     const onDataReceived = (data: string) => {
@@ -96,6 +96,7 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
           }}
           width={this.props.width}
           isReadOnly={isReadOnly}
+          key={this.props.key}
         />
         <div style={{ minHeight: 21, border: '#d2d0ce 1px solid' }}>{evaluateValue ?? ''}</div>
       </>);

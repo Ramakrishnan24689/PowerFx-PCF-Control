@@ -93,6 +93,7 @@ export interface FormulaEditorProps {
   onKeyUp?: (event: monaco.IKeyboardEvent) => void;
   onContainerKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   isReadOnly?: boolean;
+  key?: string;
 }
 
 export class PowerFxFormulaEditorError extends Error {

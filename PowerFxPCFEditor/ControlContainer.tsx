@@ -6,7 +6,7 @@ export interface ControlContainerProps extends React.ClassAttributes<ControlCont
   onEditorStateChanged?: (newState: EditorState) => void;
   entityName: string;
   formula: string;
-  //defaultValueChanged: boolean;
+  defaultValueChanged: boolean;
   formulaContext: string;
   recId: string;
   editorMaxLine?: number;
@@ -66,8 +66,8 @@ export class ControlContainer extends React.Component<ControlContainerProps, Con
         height={this.props.height}
         entityName={this.props.entityName}
         isReadOnly={this.props.isReadOnly}
-      //defaultValueChanged={this.props.defaultValueChanged}
-      //key={key}
+        defaultValueChanged={this.props.defaultValueChanged}
+        key={this.props.key}
       />
     );
   }
