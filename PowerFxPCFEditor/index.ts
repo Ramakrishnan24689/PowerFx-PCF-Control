@@ -87,6 +87,7 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
             formulaContext: formulaContext,
             onEditorStateChanged: (editorState: IOutputs) => { this._editorState = editorState; this._notifyOutputChanged(); },
             isReadOnly: context.parameters.ReadOnly.raw,
+            parameters: context.parameters.parameters.raw ?? '',
             key: this.componentKey
         };
 

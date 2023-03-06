@@ -11,6 +11,7 @@
     <property name="evaluateValue" display-name-key="EvaluatedValue" description-key="Outputs formula evaluated value" of-type="SingleLine.Text" usage="bound" />
     <property name="error" display-name-key="Error" description-key="Outputs formula evaluation error" of-type="SingleLine.Text" usage="bound" />
     <property name="ReadOnly" display-name-key="ReadOnly" description-key="Editor to be ReadOnly" of-type="TwoOptions" usage="input" />
+    <property name="parameters" display-name-key="Parameters" description-key="Parameters" of-type="Multiple" usage="input" required="false" />
     <resources>
       <code path="index.ts" order="1"/>
       <platform-library name="React" version="16.8.6" />

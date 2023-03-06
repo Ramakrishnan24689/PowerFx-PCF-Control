@@ -5,10 +5,16 @@ export class PowerFxLanguageClient {
   public constructor(private _lsp_url: string, private _onDataReceived: (data: string) => void) {
   }
 
-  public async sendAsync(data: string) {
+  public async sendAsync(data: string, _parameter: string) {
     // Hardcoded FormulaType : 1
-    //const payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1 });
-    const payloadData = JSON.stringify({ FormulaBody: data});
+    // Parameters added
+    let payloadData;
+    if (payloadData) {
+      payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1, Parameters: JSON.parse(_parameter) });
+    }
+    else {
+      payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1 });
+    }
     console.log('[LSP Client] Send: ' + payloadData);
 
     try {

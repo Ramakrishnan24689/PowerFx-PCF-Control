@@ -9,6 +9,7 @@ export interface ControlContainerProps extends React.ClassAttributes<ControlCont
   defaultValueChanged: boolean;
   formulaContext: string;
   recId: string;
+  parameters: string;
   editorMaxLine?: number;
   editorMinLine?: number;
   lspServiceURL?: string;
@@ -68,6 +69,7 @@ export class ControlContainer extends React.Component<ControlContainerProps, Con
         isReadOnly={this.props.isReadOnly}
         defaultValueChanged={this.props.defaultValueChanged}
         key={this.props.key}
+        parameters={this.props.parameters}
       />
     );
   }

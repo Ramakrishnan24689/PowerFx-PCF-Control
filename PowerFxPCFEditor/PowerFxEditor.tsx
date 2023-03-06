@@ -28,7 +28,8 @@ export interface PowerFxEditorProps {
   width?: number;
   height?: number;
   isReadOnly?: boolean;
-  key?: string
+  key?: string,
+  parameters: string
 }
 
 export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, EditorState> {
@@ -57,7 +58,7 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
         };
       },
       sendAsync: async (data: string): Promise<void> =>
-        this._languageClient.sendAsync(data)
+        this._languageClient.sendAsync(data, props.parameters)
     };
 
     // Required to preconfigure monaco loader which fails in custom page during initial load
@@ -66,8 +67,6 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
     // loader.init().then((monaco) => {
     //   console.info("monaco instance initialized");
     // }).catch((error) => { console.error(error) });
-
-
 
   }
 
