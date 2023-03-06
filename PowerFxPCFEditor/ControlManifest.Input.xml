@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="PowerCAT" constructor="PowerFxPCFEditor" version="0.0.15" display-name-key="PowerFxPCFEditor" description-key="PowerFxPCFEditor description" control-type="virtual">
+  <control namespace="PowerCAT" constructor="PowerFxPCFEditor" version="0.0.22" display-name-key="PowerFxPCFEditor" description-key="PowerFxPCFEditor description" control-type="virtual">
     <property name="formula" display-name-key="Formula" description-key="PowerFx Formula" of-type="SingleLine.Text" usage="bound" />
     <property name="defaultValue" display-name-key="Default Value" description-key="Default Formula" of-type="SingleLine.Text" usage="bound" />
     <property name="formulaContext" display-name-key="Formula Context" description-key="Formula context" of-type="SingleLine.Text" usage="input" />

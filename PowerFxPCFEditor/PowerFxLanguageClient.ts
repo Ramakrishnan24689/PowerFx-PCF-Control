@@ -10,7 +10,7 @@ export class PowerFxLanguageClient {
     // Parameters added
     let payloadData;
     if (_parameter.length > 0) {
-      payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1, Parameters: JSON.parse(_parameter) });
+      payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1, Parameters: _parameter });
     }
     else {
       payloadData = JSON.stringify({ FormulaBody: data, FormulaType: 1 });
