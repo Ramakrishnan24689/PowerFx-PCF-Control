@@ -10,6 +10,7 @@ import { sendDataAsync } from './lsp_helper';
 export interface EditorState {
   formula: string;
   formulaContext: string;
+  parameters?: string;
   error?: string;
   evaluateValue?: string;
   key?: string;
@@ -43,12 +44,12 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
       formula: props.formula,
       formulaContext: props.formulaContext,
       defaultValueChanged: props.defaultValueChanged,
+      parameters: props.parameters
     };
 
     const onDataReceived = (data: string) => {
       this._listener(data);
     };
-
     this._languageClient = new PowerFxLanguageClient(this.props.lsp_url, onDataReceived);
     this._messageProcessor = {
       addListener: (listener: (data: string) => void): IDisposable => {
@@ -58,7 +59,7 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
         };
       },
       sendAsync: async (data: string): Promise<void> =>
-        this._languageClient.sendAsync(data, props.parameters)
+        this._languageClient.sendAsync(data, this.state.parameters ?? "")
     };
 
     // Required to preconfigure monaco loader which fails in custom page during initial load
@@ -70,12 +71,17 @@ export class PowerFxEditor extends React.PureComponent<PowerFxEditorProps, Edito
 
   }
 
+  public async componentDidUpdate(prevProps: Readonly<PowerFxEditorProps>, prevState: Readonly<EditorState>) {
+    if (this.props.parameters !== prevProps.parameters) {
+      this.setState({ parameters: this.props.parameters });
+    }
+  }
+
   public async componentDidMount() {
     if (this.props.formula && this.props.formula.length > 0) {
       setTimeout(() => this._evalAsync(this.props.formula), 50);
     }
   }
-
 
   public render() {
     const { formula, evaluateValue } = this.state;

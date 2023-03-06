@@ -72,7 +72,6 @@ export class PowerFxPCFEditor implements ComponentFramework.ReactControl<IInputs
             this.entityRecordJString = "getExpressionType=true&localeName=en-US&getTokensFlags=1";
             formulaContext = this.entityRecordJString;
         }
-
         const props: ControlContainerProps = {
             recId: pageURL.id ?? '',
             entityName: context?.parameters.entityName.raw ?? pageURL.etn ?? contextEx?.page.entityTypeName,
